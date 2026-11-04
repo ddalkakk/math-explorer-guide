@@ -1,359 +1,122 @@
 <!doctype html>
 <html lang="ko">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>똑똑! 수학탐험대 사용 안내서</title>
-  <style>
-  :root {
-    --ink: #183d39;
-    --muted: #50665f;
-    --green: #126551;
-    --mint: #bdebd5;
-    --paper: #faf9f3;
-    --line: #cfddd2;
-  }
-
-  * { box-sizing: border-box; }
-
-  body {
-    margin: 0;
-    background: var(--paper);
-    color: var(--ink);
-    font-family: "Pretendard", "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
-    line-height: 1.7;
-    word-break: keep-all;
-    overflow-wrap: break-word;
-  }
-
-  main, footer {
-    width: min(900px, 92%);
-    margin-inline: auto;
-  }
-
-  main { padding-top: 24px; }
-
-  header, section {
-    padding: clamp(24px, 5vw, 48px);
-    border-radius: 24px;
-    margin-bottom: 18px;
-  }
-
-  /* 표지 오른쪽에 네 칸짜리 분수 막대를 그려요. */
-  header {
-    position: relative;
-    isolation: isolate;
-    overflow: hidden;
-    background: #104e43;
-    color: white;
-  }
-
-  header::after {
-    content: "";
-    position: absolute;
-    z-index: -1;
-    right: 6%;
-    top: 40%;
-    width: 22%;
-    height: 56px;
-    border: 3px solid #fff4cf;
-    border-radius: 9px;
-    background:
-      repeating-linear-gradient(
-        to right,
-        transparent 0 calc(25% - 2px),
-        #fff4cf calc(25% - 2px) 25%
-      ),
-      linear-gradient(to right, #ffc775 50%, #327367 50%);
-    transform: rotate(-9deg);
-    box-shadow: 6px 7px 0 #093f36;
-  }
-
-  header > * { max-width: 64%; }
-
-  h1, h2, p { margin-top: 0; }
-
-  h1, h2 {
-    line-height: 1.25;
-    letter-spacing: -.045em;
-    text-wrap: balance;
-  }
-
-  h1 {
-    margin-bottom: 14px;
-    font-size: clamp(2.3rem, 6vw, 4rem);
-  }
-
-  h2 {
-    margin-bottom: 12px;
-    font-size: clamp(1.45rem, 3.5vw, 2rem);
-  }
-
-  .label {
-    margin-bottom: 12px;
-    color: var(--green);
-    font-size: .85rem;
-    font-weight: 750;
-    letter-spacing: .035em;
-  }
-
-  header .label { color: #bdebd5; }
-
-  a { color: var(--green); }
-
-  header a {
-    display: inline-block;
-    margin-top: 6px;
-    padding: 10px 16px;
-    border-radius: 10px;
-    background: #ffda91;
-    color: #3a311c;
-    font-weight: 750;
-    text-decoration: none;
-  }
-
-  section {
-    border: 1px solid var(--line);
-    background: #fff;
-  }
-
-  /* 체험 공간에만 옅은 모눈을 깔아요. */
-  section:last-of-type {
-    background-color: #eff8ef;
-    background-image:
-      linear-gradient(#2163480b 1px, transparent 1px),
-      linear-gradient(90deg, #2163480b 1px, transparent 1px);
-    background-size: 20px 20px;
-  }
-
-  .choices { display: flex; flex-wrap: wrap; gap: 8px; }
-
-  button {
-    min-height: 44px;
-    padding: 9px 15px;
-    border: 1px solid #9fb9ad;
-    border-radius: 10px;
-    background: #fff;
-    color: var(--ink);
-    font: inherit;
-    font-weight: 600;
-    cursor: pointer;
-  }
-
-  button:hover { border-color: var(--green); }
-
-  button[aria-pressed="true"], #check {
-    border-color: var(--green);
-    background: var(--green);
-    color: #fff;
-  }
-
-  .answer {
-    margin-top: 18px;
-    padding: 16px 20px;
-    border-left: 4px solid #64ac8b;
-    border-radius: 0 12px 12px 0;
-    background: #f1f7f2;
-  }
-
-  .answer strong { font-size: 1.15rem; }
-  .answer p { margin: 4px 0 0; }
-
-  /* 네 조각이 하나의 막대로 보이도록 바깥 테두리를 연결해요. */
-  .bar {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    width: min(100%, 480px);
-    margin: 22px 0 8px;
-    border: 2px solid var(--ink);
-    border-radius: 12px;
-    background: white;
-  }
-
-  .bar button {
-    min-height: 66px;
-    border: 0;
-    border-radius: 0;
-    background: transparent;
-    font-size: 1.25rem;
-  }
-
-  .bar button + button { border-left: 2px solid var(--ink); }
-  .bar button:first-child { border-radius: 9px 0 0 9px; }
-  .bar button:last-child { border-radius: 0 9px 9px 0; }
-
-  .bar button[aria-pressed="true"] {
-    background: #ffc775;
-    color: #352c19;
-  }
-
-  .status { margin: 8px 0 16px; }
-  #feedback:empty { margin: 0; }
-  #feedback:not(:empty) { margin-top: 16px; font-weight: 650; }
-
-  details {
-    margin-top: 20px;
-    padding-top: 14px;
-    border-top: 1px solid #bad2c2;
-  }
-
-  summary { cursor: pointer; font-weight: 700; }
-  details p { margin: 8px 0 0; }
-
-  footer {
-    padding: 2px 6px 30px;
-    color: var(--muted);
-    font-size: .9rem;
-  }
-
-  :focus-visible {
-    position: relative;
-    z-index: 1;
-    outline: 3px solid #2864b3;
-    outline-offset: 3px;
-  }
-
-  @media (max-width: 620px) {
-    main { padding-top: 12px; }
-    header > * { max-width: 100%; }
-    header { padding-bottom: 84px; }
-    header::after {
-      width: 112px;
-      height: 26px;
-      top: auto;
-      bottom: 25px;
-      right: 28px;
-    }
-    #choices { display: grid; }
-    #choices button { text-align: left; }
-  }
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>수학 탐험 아틀라스 · 똑똑! 수학탐험대 활용 가이드</title>
+<style>
+:root{--ink:#173b35;--muted:#536a61;--paper:#faf9f1;--line:#c7d2bf;--forest:#105346;--lime:#e2f78a;--coral:#ffae83}
+*{box-sizing:border-box}html{scroll-padding-top:16px}body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.6 system-ui,"Malgun Gothic",sans-serif;word-break:keep-all}main,nav,footer{max-width:1176px;margin:auto;padding-inline:clamp(16px,4vw,48px)}nav,.row,.head,.controls,.tags{display:flex;align-items:center;gap:12px;flex-wrap:wrap}nav{min-height:72px;justify-content:space-between}nav a,footer a{color:inherit;text-decoration:none}nav a:hover,footer a:hover{text-decoration:underline}.brand{font-weight:850}.mark{display:inline-grid;place-items:center;width:31px;height:31px;margin-right:7px;border-radius:10px;background:var(--forest);color:var(--lime)}.navlinks{display:flex;gap:18px;font-size:.88rem}.hero{position:relative;overflow:hidden;isolation:isolate;display:grid;grid-template-columns:1fr 1.05fr;align-items:center;background:#113f36;color:white;border-radius:25px;padding:clamp(24px,4vw,52px);gap:20px}.kicker{font:700 .75rem/1.5 ui-monospace,monospace;letter-spacing:.12em;color:#4b685c}.hero .kicker{color:var(--lime)}h1,h2,h3,p{margin:0}h1,h2,h3{line-height:1.18;letter-spacing:-.045em}h1{font-size:clamp(2.6rem,5.5vw,4.8rem);margin:17px 0}h1 em{color:var(--lime);font-style:normal}.hero p{color:#e0eae1;max-width:38ch}.cta{display:inline-block;background:var(--lime);color:#173b35;text-decoration:none;padding:11px 19px;border-radius:24px;font-weight:750;margin-top:22px}.map{width:100%;display:block}.hero figure{margin:0}.hero figcaption{text-align:right;font:11px monospace;color:#c4d3bd;letter-spacing:.1em}.head{justify-content:space-between;margin:48px 0 17px}h2{font-size:clamp(1.65rem,3.2vw,2.45rem);margin:5px 0}.head p,.hint,footer{color:var(--muted)}.layout{display:grid;grid-template-columns:minmax(195px,.75fr) minmax(0,2fr);border:1px solid var(--line);border-radius:20px;overflow:hidden;background:white}.stations{background:#eeefe3;padding:14px;display:grid;align-content:start;gap:4px}button,select{font:inherit;color:inherit}button,summary,select{cursor:pointer}button{background:white;border:1px solid var(--line);border-radius:10px;padding:9px 15px;min-height:44px}button:hover{border-color:var(--forest)}button:focus-visible,a:focus-visible,summary:focus-visible,select:focus-visible{outline:3px solid #2365b8;outline-offset:2px}.stations button{text-align:left;background:transparent;border:1px solid transparent}.stations button[aria-pressed=true],.primary{background:var(--forest);color:white}.stations small{font-family:monospace;margin-right:9px}.play{padding:clamp(18px,3vw,34px);min-width:0}.play h3{font-size:1.65rem;margin:8px 0}.stage{background-color:#f1f6e9;background-image:radial-gradient(#aebfa7 .9px,transparent .9px);background-size:15px 15px;border:1px solid #d6e1ce;border-radius:14px;padding:clamp(14px,3vw,25px);margin:18px 0;min-height:130px;display:grid;align-content:center;gap:12px}.stage button{font-weight:700}.bar,.mirror{display:grid;gap:3px;max-width:420px}.bar{grid-template-columns:repeat(6,1fr)}.bar button,.mirror button{padding:0}.stage button[aria-pressed=true]{background:var(--coral);border:2px solid var(--ink)}.mirror{grid-template-columns:repeat(6,1fr);max-width:300px}.mirror button,.tile{min-height:36px;display:grid;place-items:center;border-radius:4px}.mirror :nth-child(6n + 3){border-right:4px solid var(--forest)}.tile{background:#fff;border:1px solid var(--line)}.tile.on{background:#51776b;color:white}.sequence{font-size:1.8rem;letter-spacing:.1em}.blocks{display:flex;align-items:end;gap:14px;min-height:102px}.tower{display:grid;align-content:end;justify-items:center;flex:1;height:100%}.cube{height:12px;width:min(50px,96%);background:#f6b080;border:1px solid #925c3e}.tower b{font-size:.8rem}.feedback{min-height:1.5em;margin-top:10px;font-weight:650}.feedback:empty{min-height:0}.atlas{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.atlas details, .record{background:white;border:1px solid var(--line);border-radius:14px;padding:16px 20px}.atlas summary{font-weight:750}.atlas details[open]{background:#f0f5e8}.atlas details p{margin-top:10px}.record{padding:24px}.record ul{padding-left:20px}.record a,footer a{text-decoration:underline;color:var(--forest)}.links{margin:16px 0 30px;display:flex;gap:10px;flex-wrap:wrap}.links a{background:#e8eee1;color:var(--forest);border-radius:24px;padding:8px 16px;text-decoration:none}footer{padding-block:25px 45px;border-top:1px solid var(--line);font-size:.9rem}select{padding:7px;border:1px solid var(--line);border-radius:8px;background:white}.dots{line-height:1.2;color:#13735b;letter-spacing:.14em;font-size:1.25rem;white-space:pre}.chartline{display:grid;grid-template-columns:3em 1fr 2em;align-items:center;gap:7px}.chartline i{background:#458977;border-radius:0 6px 6px 0;height:18px}
+@media(max-width:720px){nav{padding-block:12px;gap:6px}.navlinks{gap:12px}.hero{grid-template-columns:1fr}.hero figure{max-width:460px;width:100%;margin:auto}.layout{grid-template-columns:1fr}.stations{grid-template-columns:repeat(3,1fr);padding:8px}.stations button{padding:6px;font-size:.85rem}.stations small{display:block}.atlas{grid-template-columns:1fr}.head{margin-top:32px}}
 </style>
 </head>
 <body>
-  <main>
-    <header>
-      <p class="label">초등 수학 · 예비교사를 위한 사용 안내서</p>
-      <h1>똑똑! 수학탐험대</h1>
-      <p>오늘 배운 내용을 연습하고, 학생에게 맞는 다음 활동을 찾을 수 있는
-        초등 수학 학습 서비스예요. 우리 수업에서 어떻게 쓸지 살펴보세요.</p>
-      <a href="https://www.toctocmath.kr/">공식 수학탐험대 열기 ↗</a>
-    </header>
-
-    <section>
-      <p class="label">01 / 수업에 연결하기</p>
-      <h2>지금 교실에 필요한 건 뭘까요?</h2>
-      <p>상황을 하나 눌러 어떤 기능을 쓰면 좋을지 확인하세요.</p>
-
-      <div class="choices" id="choices" role="group" aria-label="수업 상황 선택">
-        <button type="button" data-key="lesson" aria-pressed="true">오늘 배운 내용 연습</button>
-        <button type="button" data-key="next" aria-pressed="false">학생별 다음 활동 찾기</button>
-        <button type="button" data-key="review" aria-pressed="false">수업 뒤 학습 현황 확인</button>
-      </div>
-
-      <div class="answer" aria-live="polite">
-        <strong id="feature">교과활동</strong>
-        <p id="advice">오늘 수업과 연결되는 단원과 차시를 골라 연습해요.
-          활동 후에는 짝에게 한 문제의 풀이 방법을 설명해 보게 하세요.</p>
-      </div>
-    </section>
-
-    <section>
-      <p class="label">02 / 직접 눌러 보는 수업 예시</p>
-      <h2>한 막대의 ½을 색칠해 볼까요?</h2>
-      <p>막대 하나를 똑같은 네 칸으로 나눴어요.
-        칸을 누르면 색칠되고, 다시 누르면 색이 빠져요.</p>
-
-      <div class="bar" id="bar" role="group" aria-label="네 칸으로 나눈 분수 막대">
-        <button type="button" aria-label="첫째 칸" aria-pressed="false">1</button>
-        <button type="button" aria-label="둘째 칸" aria-pressed="false">2</button>
-        <button type="button" aria-label="셋째 칸" aria-pressed="false">3</button>
-        <button type="button" aria-label="넷째 칸" aria-pressed="false">4</button>
-      </div>
-      <p class="status" id="count" aria-live="polite">색칠한 부분은 전체의 0/4이에요.</p>
-      <div class="choices">
-        <button type="button" id="check">내 답 확인</button>
-        <button type="button" id="reset">다시 하기</button>
-      </div>
-      <p class="status" id="feedback" role="status"></p>
-
-      <details>
-        <summary>선생님을 위한 발문</summary>
-        <p>“한 친구는 왼쪽 두 칸을, 다른 친구는 양 끝 한 칸씩을 색칠했어요.
-          둘 다 절반이라고 할 수 있을까요? 막대를 보며 설명해 보세요.”</p>
-      </details>
-    </section>
-  </main>
-
-  <footer>
-    예비교사가 수업 활용을 소개하는 페이지입니다. 분수 막대는 자체 제작한 예시입니다.<br>
-    <a href="https://www.toctocmath.kr/">공식 서비스 소개</a> ·
-    <a href="https://www.toctocmath.kr/board/data">수업 활용 자료실</a>
-  </footer>
-
-  <script>
-    const features = {
-      lesson: {
-        name: "교과활동",
-        tip: "오늘 수업과 연결되는 단원과 차시를 골라 연습해요. 활동 후에는 짝에게 한 문제의 풀이 방법을 설명해 보게 하세요."
-      },
-      next: {
-        name: "인공지능 추천활동",
-        tip: "학생의 학습 결과를 바탕으로 추천된 활동을 살펴봐요. 학생에게 “어느 부분을 더 연습하고 싶니?”라고 묻고 다음 활동을 함께 골라 보세요."
-      },
-      review: {
-        name: "학습 대시보드",
-        tip: "교사는 학생들의 학습 활동 현황을 확인할 수 있어요. 다음 수업에서는 도움이 필요한 학생과 한 문제를 다시 풀며 어느 단계에서 막혔는지 들어보세요."
-      }
-    };
-
-    const choices = document.querySelectorAll("#choices button");
-    for (const choice of choices) {
-      choice.addEventListener("click", () => {
-        for (const item of choices) {
-          item.setAttribute("aria-pressed", String(item === choice));
-        }
-        const selected = features[choice.dataset.key];
-        document.getElementById("feature").textContent = selected.name;
-        document.getElementById("advice").textContent = selected.tip;
-      });
-    }
-
-    const cells = document.querySelectorAll("#bar button");
-    const count = document.getElementById("count");
-    const feedback = document.getElementById("feedback");
-
-    function paintedCount() {
-      return document.querySelectorAll('#bar button[aria-pressed="true"]').length;
-    }
-
-    function updateBar() {
-      count.textContent = `색칠한 부분은 전체의 ${paintedCount()}/4이에요.`;
-      feedback.textContent = "";
-    }
-
-    for (const cell of cells) {
-      cell.addEventListener("click", () => {
-        const painted = cell.getAttribute("aria-pressed") === "true";
-        cell.setAttribute("aria-pressed", String(!painted));
-        updateBar();
-      });
-    }
-
-    document.getElementById("check").addEventListener("click", () => {
-      const total = paintedCount();
-      if (total === 2) {
-        feedback.textContent = "맞았어요! 같은 크기 네 칸 중 두 칸이니 2/4 = 1/2이에요. 다른 두 칸을 골라도 절반이 될까요?";
-      } else if (total < 2) {
-        feedback.textContent = "절반보다 적어요. 색칠한 칸과 빈칸의 수가 같아지도록 칸을 더 눌러 보세요.";
-      } else {
-        feedback.textContent = "절반보다 많아요. 색칠한 칸을 다시 눌러 빈칸의 수와 같게 만들어 보세요.";
-      }
-    });
-
-    document.getElementById("reset").addEventListener("click", () => {
-      for (const cell of cells) cell.setAttribute("aria-pressed", "false");
-      updateBar();
-    });
-  </script>
-</body>
-</html>
+<nav aria-label="주 메뉴"><span class="brand"><span class="mark">✳</span>수학 탐험 아틀라스</span><div class="navlinks"><a href="#lab">체험실</a><a href="#guide">기능 도감</a><a href="#log">탐험 기록</a></div></nav>
+<main><div class="hero"><div><span class="kicker">FIELD GUIDE　/　VOL. 01</span><h1>똑똑! 수학탐험대<br><em>탐험 아틀라스</em></h1><p>분수 해안에서 평균 봉우리까지. 여섯 개의 작은 실험을 거치며 초등 수학 수업에 디지털 교구를 쓰는 방법을 찾아보세요.</p><a class="cta" href="#lab">탐험 시작하기　↓</a></div>
+<figure><svg class="map" viewBox="0 0 480 305" role="img" aria-label="여섯 체험 지점이 점선 탐방로로 이어진 수학섬 지도"><defs><pattern id="sea" width="22" height="22" patternUnits="userSpaceOnUse"><path d="M1 11q4 -3 8 0" fill="none" stroke="#76a69a" opacity=".45"/></pattern><g id="tree"><path d="m0 0 7 -15 7 15h-4l5 7H-1l5 -7z" fill="#43866e"/><path d="M7 6v6" stroke="#42644f" stroke-width="3"/></g></defs><rect width="480" height="305" rx="18" fill="#377969"/><rect width="480" height="305" rx="18" fill="url(#sea)"/><path d="M34 177Q2 138 65 103T159 59Q197 2 256 40T345 41Q408 32 409 80T455 141Q480 186 418 202T338 255Q277 290 231 255T137 260Q88 276 77 233T34 177Z" fill="#a7cba5" stroke="#7eb7a0" stroke-width="10"/><path d="M47 171Q22 145 80 113T172 69Q202 24 252 54T346 55Q393 48 396 90T440 147Q451 174 409 189T329 243Q280 271 235 239T137 244Q102 259 91 220T47 171Z" fill="#dfdfa6"/><path d="m292 103 35-64 36 64z" fill="#739979"/><path d="m312 66 15-27 15 27-10-5-8 5-5-5z" fill="#f8f3d5"/><path d="M194 63q-25 45 10 69t-2 60q-24 38 31 63" fill="none" stroke="#7fb6a8" stroke-width="11"/><g id="trees"></g><path d="M85 167Q86 79 143 95T237 106Q288 90 302 147T377 169Q352 244 263 216" fill="none" stroke="#665d42" stroke-width="3" stroke-dasharray="5 6"/><g id="pins"></g><text x="18" y="285" fill="#eff5da" font-size="11" font-family="monospace">FIG. 01 / MATH ISLAND</text><text x="444" y="28" fill="#fff" font-size="15">↑ N</text></svg><figcaption>PLATE 01　·　수학섬 탐방도</figcaption></figure></div>
+<section id="lab"><div class="head"><div><span class="kicker">01 / INTERACTIVE LAB</span><h2>손으로 푸는 탐험실</h2><p>원하는 지점을 골라 보세요. 각 체험에는 교실에서 이어 갈 질문이 있어요.</p></div></div>
+<div class="layout"><div class="stations" id="stations" aria-label="체험 선택"></div><article class="play"><span class="kicker" id="meta"></span><h3 id="title"></h3><p id="task"></p><div class="stage" id="stage"></div><div class="controls"><button class="primary" id="check">결과 확인</button><button id="reset">처음부터</button></div><p class="feedback" role="status" id="feedback"></p><details id="teacher"><summary>선생님의 다음 질문</summary><p id="prompt"></p></details></article></div></section>
+<section id="guide"><div class="head"><div><span class="kicker">02 / FIELD NOTES</span><h2>공식 기능 도감</h2><p>똑똑! 수학탐험대는 한국교육학술정보원이 운영하는 초등 1~6학년 대상 무료 서비스예요. 항목을 펼쳐 교실에서 쓰는 장면을 살펴보세요.</p></div></div><div class="atlas" id="atlas"></div></section>
+<section id="log"><div class="head"><div><span class="kicker">03 / EXPLORER LOG</span><h2>나의 탐험 기록</h2></div></div><div class="record"><strong id="progress"></strong><p id="advice"></p><ul id="results"></ul><button id="continue">추천 체험 열기 →</button></div></section>
+<section><div class="head"><div><span class="kicker">04 / RESOURCES</span><h2>실제 수업 준비하기</h2><p>공식 사이트에서 학년과 단원을 확인하고, 자료실의 수업 사례를 함께 살펴보세요.</p></div></div><div class="links"><a href="https://www.toctocmath.kr/">공식 서비스 ↗</a><a href="https://www.toctocmath.kr/board/data">수업 자료실 ↗</a><a href="https://www.toctocmath.kr/board/faq">가입·학급 등록 안내 ↗</a></div></section></main>
+<footer>수학 탐험 아틀라스 · 예비교사가 만든 비공식 활용 가이드<br>지도와 여섯 체험은 자체 제작 예시입니다. 탐험 기록은 이 브라우저에 저장되며, 다음 체험은 완료 여부에 따라 제안합니다.</footer>
+<script>
+const $ = id => document.getElementById(id);
+const locations = [[85,167],[143,95],[237,106],[302,147],[377,169],[263,216]];
+$('pins').innerHTML = locations.map(([x,y],i) => '<g transform="translate('+x+' '+y+')"><circle r="14" fill="#fff9d6" stroke="#294e43" stroke-width="2"/><text y="5" text-anchor="middle" font-size="13" font-weight="bold" fill="#174c40">'+(i+1)+'</text></g>').join('');
+$('trees').innerHTML = [[110,140],[120,147],[135,135],[151,204],[159,210],[289,194],[391,136],[380,135],[235,77],[67,150]].map(([x,y]) => '<use href="#tree" x="'+x+'" y="'+y+'"/>').join('');
+const notes = [
+ ['교과활동','학년·학기·단원·차시를 골라 수업 내용에 맞는 활동을 찾아요.','차시를 고른 뒤 오늘 배울 개념을 설명하는 자료를 먼저 보고, 학생이 짝에게 풀이를 들려주는 시간을 마련해요.'],
+ ['탐험활동','미션 속 수학 문제를 풀며 학습을 이어 가요.','미션이 끝나면 어떤 수학 생각이 해결의 실마리였는지 한 문장으로 남겨요.'],
+ ['자유활동','학생이 관심 있는 활동을 선택해 수학을 탐색해요.','선택한 까닭과 새로 발견한 점을 친구에게 소개해요.'],
+ ['디지털 교구','화면에서 수학 대상을 움직이거나 비교하며 개념을 살펴봐요.','분수 막대라면 먼저 결과를 예상하고 조작한 뒤, 예상과 같았는지 말해요.'],
+ ['진단·평가활동','진단과 평가 결과로 학생의 현재 이해를 살펴봐요.','틀린 문항 하나를 골라 학생이 어떻게 생각했는지 들은 뒤 후속 활동을 정해요.'],
+ ['인공지능 추천활동','진단 결과를 바탕으로 학생에게 맞는 활동을 제안해요.','추천 활동을 마친 뒤 처음 어려웠던 문제로 돌아가 풀이가 어떻게 달라졌는지 비교해요.'],
+ ['학습 대시보드','학습 활동 현황과 평가 결과를 확인해요.','같은 문제를 어려워한 학생들과 교구를 다시 조작하며 공통으로 막힌 부분을 찾아요.'],
+ ['학급 연결과 참여코드','가입한 학생을 학급에 등록하면 수업 참여코드로 로그인할 수 있어요.','수업 전에는 학급 등록을 확인하고, 수업 중에는 학생이 자기 이름으로 들어왔는지 확인해요.']
+];
+for(const [name,summary,example] of notes){
+ const note=document.createElement('details');
+ note.innerHTML='<summary>'+name+'</summary><p>'+summary+'</p><p><b>교실에서는</b>　'+example+'</p>';
+ $('atlas').append(note);
+}
+const labs = [
+ ['분수 해안','분수','여섯 칸으로 나눈 막대의 ⅔를 색칠하세요.','색칠한 칸의 위치가 흩어져 있어도 같은 분수일까요?'],
+ ['배열 정원','곱셈','꽃 12송이를 세 줄에 똑같이 심으세요.','줄 수와 한 줄의 꽃 수를 바꾸면 전체는 어떻게 될까요?'],
+ ['대칭 계곡','도형','굵은 세로선을 거울이라고 생각하고 오른쪽에 비친 무늬를 만드세요.','기준선에 붙은 칸의 짝은 어디에 있을까요?'],
+ ['규칙 숲','규칙','모양이 반복되는 순서를 보고 이어질 두 칸을 차례로 채우세요.','가장 짧게 반복되는 모양 묶음은 무엇인가요?'],
+ ['자료 항구','자료','배 1척은 상자 2개를 실어요. 가장 많이 실어 온 항구와 가장 적게 실어 온 항구의 상자 수 차이를 구하세요.','막대의 길이 차이를 상자 수로 바꿀 때 무엇을 고려했나요?'],
+ ['평균 봉우리','평균','쌓기나무를 한 개씩 옮겨 세 탑의 높이를 같게 만드세요.','탑의 높이가 달라져도 전체 쌓기나무 수는 왜 그대로일까요?']
+];
+let active=0, picked=[], rows=2, columns=3, towers=[], stamp='', next=0;
+const key='math-atlas-v1';
+let record={};
+try {const saved=JSON.parse(localStorage.getItem(key)); if(saved && typeof saved==='object') record=saved;}catch{}
+const stationButtons=labs.map(([name],i)=>{
+ const button=document.createElement('button');
+ button.innerHTML='<small>0'+(i+1)+'</small>'+name;
+ button.onclick=()=>openLab(i);
+ $('stations').append(button);
+ return button;
+});
+function options(values,selected){return values.map(v=>'<option'+(v===selected?' selected':'')+'>'+v+'</option>').join('');}
+function toggles(count){return Array.from({length:count},(_,i)=>'<button aria-label="'+(i+1)+'번째 칸" aria-pressed="'+picked.includes(i)+'" data-cell="'+i+'">'+(picked.includes(i)?'●':'○')+'</button>').join('');}
+function draw(){
+ const stage=$('stage');
+ if(active===0) stage.innerHTML='<div class="bar">'+toggles(6)+'</div><b>색칠한 부분　'+picked.length+' / 6</b>';
+ if(active===1) stage.innerHTML='<div class="controls"><label>줄 수 <select id="rows">'+options([1,2,3,4,5,6],rows)+'</select></label><label>한 줄의 꽃 <select id="columns">'+options([1,2,3,4,5,6],columns)+'</select></label></div><div class="dots" aria-hidden="true">'+Array(rows).fill('✿ '.repeat(columns)).join('\n')+'</div><b>전체 '+(rows*columns)+'송이</b>';
+ if(active===2){
+  const left=[0,2,4,8];let grid='';
+  for(let r=0;r<3;r++){for(let c=0;c<6;c++){
+   if(c<3){const on=left.includes(r*3+c);grid+='<span class="tile '+(on?'on':'')+'" aria-label="왼쪽 '+(r+1)+'행 '+(c+1)+'열 '+(on?'색칠':'빈칸')+'">'+(on?'●':'·')+'</span>';}
+   else{const pos=r*3+c-3;grid+='<button data-cell="'+pos+'" aria-label="오른쪽 '+(r+1)+'행 '+(c-2)+'열" aria-pressed="'+picked.includes(pos)+'">'+(picked.includes(pos)?'●':'·')+'</button>';}
+  }}stage.innerHTML='<div class="mirror">'+grid+'</div>';
+ }
+ if(active===3) stage.innerHTML='<div class="sequence">● ▲ ▲　● ▲ ▲　● '+(picked[0]||'□')+' '+(picked[1]||'□')+'</div><div class="controls"><button data-shape="●">● 원</button><button data-shape="▲">▲ 세모</button><button id="undo">한 칸 지우기</button></div>';
+ if(active===4) stage.innerHTML='<b>항구별 도착한 배 · 단위는 척</b>'+[['솔빛',3],['바다',7],['노을',5]].map(([name,n])=>'<div class="chartline"><span>'+name+'</span><i style="width:'+n/7*100+'%"></i><b>'+n+'</b></div>').join('')+'<label>상자 수 차이　<select id="cargo">'+options(['선택',2,4,6,8,10,12],stamp)+'</select> 개</label>';
+ if(active===5) stage.innerHTML='<div class="blocks">'+towers.map((n,i)=>'<div class="tower">'+('<span class="cube"></span>').repeat(n)+'<b>'+['A','B','C'][i]+' · '+n+'개</b></div>').join('')+'</div><div class="controls"><label>출발 <select id="from">'+options(['A','B','C'],from)+'</select></label><label>도착 <select id="to">'+options(['A','B','C'],to)+'</select></label><button id="move">1개 옮기기</button></div>';
+}
+let from='A',to='B';
+function openLab(i){
+ active=i;picked=[];rows=2;columns=3;towers=[6,2,4];stamp='선택';from='A';to='B';
+ stationButtons.forEach((b,n)=>b.setAttribute('aria-pressed',String(i===n)));
+ const [name,topic,task,prompt]=labs[i];
+ $('meta').textContent='STATION 0'+(i+1)+'　/　'+topic;$('title').textContent=name;$('task').textContent=task;$('prompt').textContent=prompt;
+ $('teacher').open=false;$('feedback').textContent='';draw();
+}
+$('stage').onclick=e=>{
+ const b=e.target.closest('button');if(!b)return;
+ $('feedback').textContent='';
+ if(b.dataset.cell!==undefined){const n=Number(b.dataset.cell);picked=picked.includes(n)?picked.filter(x=>x!==n):[...picked,n];}
+ if(b.dataset.shape){if(picked.length===2){$('feedback').textContent='두 칸을 모두 채웠어요. 결과를 확인하거나 한 칸 지워 보세요.';return;}picked.push(b.dataset.shape);}
+ if(b.id==='undo')picked.pop();
+ if(b.id==='move'){const a='ABC'.indexOf(from),z='ABC'.indexOf(to);if(a===z||!towers[a]){$('feedback').textContent='나무가 있는 탑을 골라 다른 탑으로 옮겨 보세요.';return;}towers[a]--;towers[z]++;}
+ const selector=b.dataset.cell!==undefined?'[data-cell="'+b.dataset.cell+'"]':b.id?'#'+b.id:'[data-shape="'+b.dataset.shape+'"]';
+ draw();$('stage').querySelector(selector)?.focus();
+};
+$('stage').onchange=e=>{
+ $('feedback').textContent='';const {id,value}=e.target;
+ if(id==='rows'||id==='columns'){if(id==='rows')rows=Number(value);else columns=Number(value);draw();$(id).focus();}
+ if(id==='cargo')stamp=value;if(id==='from')from=value;if(id==='to')to=value;
+};
+function updateLog(){
+ const done=labs.filter((_,i)=>record[i]==='done').length;
+ next=labs.findIndex((_,i)=>record[i]==='retry');
+ if(next<0)next=labs.findIndex((_,i)=>record[i]!=='done');
+ $('progress').textContent='탐험 도장　'+done+' / 6';
+ $('advice').textContent=next<0?'모든 지점을 탐험했어요. 한 가지 교구를 골라 친구에게 풀이를 설명해 보세요.':(record[next]==='retry'?'다시 풀어 볼 지점은 ':'다음에 방문할 지점은 ')+labs[next][0]+'입니다.';
+ $('results').innerHTML=labs.map(([name],i)=>'<li>'+name+'　·　'+({done:'완료',retry:'다시 도전'}[record[i]]||'미탐험')+'</li>').join('');
+ $('continue').textContent=next<0?'첫 체험 다시 열기 →':'추천 체험 열기 →';
+}
+$('check').onclick=()=>{
+ const correct=[picked.length===4,rows===3&&columns===4,[0,2,4,6].every(v=>picked.includes(v))&&picked.length===4,picked.join('')==='▲▲',stamp==='8',towers.every(n=>n===4)][active];
+ const success=['6칸 중 4칸이에요. 두 칸씩 묶으면 세 묶음 중 두 묶음이죠.','3줄에 4송이씩, 모두 12송이예요.','모든 점과 짝이 기준선에서 같은 거리만큼 떨어져 있어요.','● ▲ ▲가 반복되므로 ● 다음에는 ▲ ▲가 와요.','7척과 3척의 차이는 4척이에요. 4 × 2 = 8상자예요.','전체 12개를 그대로 두고 세 탑을 각 4개로 맞췄어요.'][active];
+ const hint=['두 칸씩 한 묶음으로 보세요. 세 묶음 중 몇 묶음이 필요할까요?','줄 수를 3으로 맞춘 뒤 한 줄에 꽃을 몇 송이 놓을지 조절해 보세요.','가운데 세로선에서 한 칸씩 세어 짝을 찾아보세요.','●에서 다음 ● 직전까지의 모양을 소리 내어 읽어 보세요.','먼저 배의 수 차이를 구한 뒤 한 척에 실린 상자 수를 곱해 보세요.','높은 탑에서 낮은 탑으로 하나씩 옮겨 보세요.'][active];
+ $('feedback').textContent=correct?'도장 획득! '+success:hint;
+ if(correct||record[active]!=='done')record[active]=correct?'done':'retry';
+ try{localStorage.setItem(key,JSON.stringify(record));}catch{}
+ updateLog();
+};
+$('reset').onclick=()=>openLab(active);
+$('continue').onclick=()=>{openLab(Math.max(0,next));$('lab').scrollIntoView();stationButtons[active].focus({preventScroll:true});};
+openLab(0);updateLog();
+</script></body></html>
