@@ -1,13 +1,224 @@
 <!doctype html>
 <html lang="ko">
-<meta charset="utf-8">
-<title>똑똑수학탐험대 소개</title>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>똑똑! 수학탐험대 사용 안내서</title>
+  <style>
+    :root {
+      --ink: #163d40;
+      --teal: #096b63;
+      --mint: #d5f3df;
+      --paper: #f7faf5;
+      --line: #cbdcd4;
+    }
 
-<h1>똑똑수학탐험대 소개</h1>
-<p>아래를 눌러 수업 아이디어를 확인해 보세요.</p>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      color: var(--ink);
+      background: var(--paper);
+      font-family: system-ui, "Malgun Gothic", sans-serif;
+      line-height: 1.65;
+      word-break: keep-all;
+    }
+    main, footer { width: min(900px, 92%); margin: auto; }
+    header, section { margin: 18px 0; padding: clamp(22px, 5vw, 44px); }
+    header {
+      background: #114e4b;
+      color: white;
+      border-radius: 26px;
+    }
+    .label {
+      margin: 0 0 8px;
+      font-size: .85rem;
+      font-weight: 750;
+      letter-spacing: .06em;
+      color: var(--teal);
+    }
+    header .label { color: #b6efc9; }
+    h1, h2 { margin: 0; line-height: 1.25; }
+    h1 { font-size: clamp(2.2rem, 7vw, 4rem); }
+    h2 { font-size: clamp(1.45rem, 4vw, 2rem); }
+    section {
+      background: white;
+      border: 1px solid var(--line);
+      border-radius: 22px;
+    }
+    a { color: var(--teal); }
+    header a {
+      display: inline-block;
+      padding: 9px 16px;
+      border-radius: 10px;
+      background: var(--mint);
+      color: var(--ink);
+      font-weight: 700;
+      text-decoration: none;
+    }
+    .choices { display: flex; gap: 8px; flex-wrap: wrap; }
+    button {
+      font: inherit;
+      color: var(--ink);
+      background: white;
+      border: 1px solid #91b3a5;
+      border-radius: 10px;
+      padding: 10px 14px;
+      cursor: pointer;
+    }
+    button[aria-pressed="true"] {
+      background: var(--teal);
+      color: white;
+    }
+    :focus-visible { outline: 3px solid #de8726; outline-offset: 3px; }
+    .answer {
+      margin-top: 16px;
+      padding: 18px;
+      border-radius: 12px;
+      background: #eef7f0;
+    }
+    .answer p { margin: 4px 0 0; }
+    .bar {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 3px;
+      max-width: 460px;
+      margin: 18px 0 8px;
+    }
+    .bar button {
+      min-height: 62px;
+      border-radius: 5px;
+      font-size: 1.25rem;
+      font-weight: 700;
+    }
+    .status { min-height: 1.7em; }
+    footer { padding: 4px 4px 32px; font-size: .9rem; }
+  </style>
+</head>
+<body>
+  <main>
+    <header>
+      <p class="label">초등 수학 · 예비교사를 위한 사용 안내서</p>
+      <h1>똑똑! 수학탐험대</h1>
+      <p>오늘 배운 내용을 연습하고, 학생에게 맞는 다음 활동을 찾을 수 있는
+        초등 수학 학습 서비스예요. 우리 수업에서 어떻게 쓸지 살펴보세요.</p>
+      <a href="https://www.toctocmath.kr/">공식 수학탐험대 열기 ↗</a>
+    </header>
 
-<details>
-  <summary>수업 아이디어 보기</summary>
-  <p>같은 문제를 푼 친구와 풀이 방법을 비교해 보세요.</p>
-</details>
+    <section>
+      <p class="label">01 / 수업에 연결하기</p>
+      <h2>지금 교실에 필요한 건 뭘까요?</h2>
+      <p>상황을 하나 눌러 어떤 기능을 쓰면 좋을지 확인하세요.</p>
+
+      <div class="choices" id="choices" role="group" aria-label="수업 상황 선택">
+        <button type="button" data-key="lesson" aria-pressed="true">오늘 배운 내용 연습</button>
+        <button type="button" data-key="next" aria-pressed="false">학생별 다음 활동 찾기</button>
+        <button type="button" data-key="review" aria-pressed="false">수업 뒤 학습 현황 확인</button>
+      </div>
+
+      <div class="answer" aria-live="polite">
+        <strong id="feature">교과활동</strong>
+        <p id="advice">오늘 수업과 연결되는 단원과 차시를 골라 연습해요.
+          활동 후에는 짝에게 한 문제의 풀이 방법을 설명해 보게 하세요.</p>
+      </div>
+    </section>
+
+    <section>
+      <p class="label">02 / 직접 눌러 보는 수업 예시</p>
+      <h2>한 막대의 ½을 색칠해 볼까요?</h2>
+      <p>막대 하나를 똑같은 네 칸으로 나눴어요.
+        칸을 누르면 색칠되고, 다시 누르면 색이 빠져요.</p>
+
+      <div class="bar" id="bar" role="group" aria-label="네 칸으로 나눈 분수 막대">
+        <button type="button" aria-label="첫째 칸" aria-pressed="false">1</button>
+        <button type="button" aria-label="둘째 칸" aria-pressed="false">2</button>
+        <button type="button" aria-label="셋째 칸" aria-pressed="false">3</button>
+        <button type="button" aria-label="넷째 칸" aria-pressed="false">4</button>
+      </div>
+      <p class="status" id="count" aria-live="polite">색칠한 부분은 전체의 0/4이에요.</p>
+      <div class="choices">
+        <button type="button" id="check">내 답 확인</button>
+        <button type="button" id="reset">다시 하기</button>
+      </div>
+      <p class="status" id="feedback" role="status"></p>
+
+      <details>
+        <summary>선생님을 위한 발문</summary>
+        <p>“한 친구는 왼쪽 두 칸을, 다른 친구는 양 끝 한 칸씩을 색칠했어요.
+          둘 다 절반이라고 할 수 있을까요? 막대를 보며 설명해 보세요.”</p>
+      </details>
+    </section>
+  </main>
+
+  <footer>
+    예비교사가 수업 활용을 소개하는 페이지입니다. 분수 막대는 자체 제작한 예시입니다.<br>
+    <a href="https://www.toctocmath.kr/">공식 서비스 소개</a> ·
+    <a href="https://www.toctocmath.kr/board/data">수업 활용 자료실</a>
+  </footer>
+
+  <script>
+    const features = {
+      lesson: {
+        name: "교과활동",
+        tip: "오늘 수업과 연결되는 단원과 차시를 골라 연습해요. 활동 후에는 짝에게 한 문제의 풀이 방법을 설명해 보게 하세요."
+      },
+      next: {
+        name: "인공지능 추천활동",
+        tip: "학생의 학습 결과를 바탕으로 추천된 활동을 살펴봐요. 학생에게 “어느 부분을 더 연습하고 싶니?”라고 묻고 다음 활동을 함께 골라 보세요."
+      },
+      review: {
+        name: "학습 대시보드",
+        tip: "교사는 학생들의 학습 활동 현황을 확인할 수 있어요. 다음 수업에서는 도움이 필요한 학생과 한 문제를 다시 풀며 어느 단계에서 막혔는지 들어보세요."
+      }
+    };
+
+    const choices = document.querySelectorAll("#choices button");
+    for (const choice of choices) {
+      choice.addEventListener("click", () => {
+        for (const item of choices) {
+          item.setAttribute("aria-pressed", String(item === choice));
+        }
+        const selected = features[choice.dataset.key];
+        document.getElementById("feature").textContent = selected.name;
+        document.getElementById("advice").textContent = selected.tip;
+      });
+    }
+
+    const cells = document.querySelectorAll("#bar button");
+    const count = document.getElementById("count");
+    const feedback = document.getElementById("feedback");
+
+    function paintedCount() {
+      return document.querySelectorAll('#bar button[aria-pressed="true"]').length;
+    }
+
+    function updateBar() {
+      count.textContent = `색칠한 부분은 전체의 ${paintedCount()}/4이에요.`;
+      feedback.textContent = "";
+    }
+
+    for (const cell of cells) {
+      cell.addEventListener("click", () => {
+        const painted = cell.getAttribute("aria-pressed") === "true";
+        cell.setAttribute("aria-pressed", String(!painted));
+        updateBar();
+      });
+    }
+
+    document.getElementById("check").addEventListener("click", () => {
+      const total = paintedCount();
+      if (total === 2) {
+        feedback.textContent = "맞았어요! 같은 크기 네 칸 중 두 칸이니 2/4 = 1/2이에요. 다른 두 칸을 골라도 절반이 될까요?";
+      } else if (total < 2) {
+        feedback.textContent = "절반보다 적어요. 색칠한 칸과 빈칸의 수가 같아지도록 칸을 더 눌러 보세요.";
+      } else {
+        feedback.textContent = "절반보다 많아요. 색칠한 칸을 다시 눌러 빈칸의 수와 같게 만들어 보세요.";
+      }
+    });
+
+    document.getElementById("reset").addEventListener("click", () => {
+      for (const cell of cells) cell.setAttribute("aria-pressed", "false");
+      updateBar();
+    });
+  </script>
+</body>
 </html>
