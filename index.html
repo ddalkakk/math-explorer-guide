@@ -19,49 +19,139 @@ nav{gap:12px}.hero{background:linear-gradient(120deg,#234f54,#336961);border:3px
 @keyframes drift{to{transform:translateX(13px)}}@keyframes sailing{50%{transform:translate(5px,-3px) rotate(3deg)}}@keyframes sway{0%,100%{transform:rotate(-4deg)}50%{transform:translateY(-3px) rotate(4deg)}}@keyframes walking{to{stroke-dashoffset:-44}}@keyframes pop{50%{transform:scale(1.08)}}@keyframes bloom{from{opacity:.6;transform:translateY(4px)}to{opacity:1;transform:translateY(0)}}
 @media(prefers-reduced-motion:reduce){*,*:before,*:after{animation:none!important;transition:none!important}}html.still *,html.still *:before,html.still *:after{animation:none!important;transition:none!important}
 .source,.officialstrip a{color:#18564a;font-weight:750}.source{display:inline-block;margin-top:12px}.officialstrip{padding:15px 18px;margin:12px 0 18px;border-radius:14px;background:#edf5e9}.model{width:min(100%,270px);max-height:205px;justify-self:center}.pads,.ten{display:grid;gap:4px;max-width:360px}.pads{grid-template-columns:repeat(2,1fr)}.ten{grid-template-columns:repeat(5,1fr)}.ten button{padding:3px}.geo{position:relative;width:min(100%,230px);aspect-ratio:1;justify-self:center}.geo svg{width:100%;height:100%}.geo button{position:absolute;transform:translate(-50%,-50%);min-height:30px;width:30px;height:30px;padding:0;border-radius:100%}
-.strip{display:grid;grid-template-columns:3em 1fr auto auto;gap:4px;align-items:center}.pieces{display:grid;height:30px;background:white;border:1px solid #54786c}.pieces i{border-right:1px solid #80998a}.pieces .filled{background:#ffc683}.token.red{color:#a53042}.token.blue{color:#155c99}.ten .token{font-size:1.4rem}.strip button{padding:4px 9px}</style>
+.strip{display:grid;grid-template-columns:3em 1fr auto auto;gap:4px;align-items:center}.pieces{display:grid;height:30px;background:white;border:1px solid #54786c}.pieces i{border-right:1px solid #80998a}.pieces .filled{background:#ffc683}.token.red{color:#a53042}.token.blue{color:#155c99}.ten .token{font-size:1.4rem}.strip button{padding:4px 9px}
+.map a.completed circle{fill:#216d58;stroke:#fff4bd;stroke-width:3}
+.map a.completed text{fill:white}
+.map a.completed:hover circle{fill:#164d40}
+.official-card{display:grid;gap:12px;padding:26px;border:2px solid #dfd6bd;border-radius:20px;background:#fffaf0;color:var(--ink);text-decoration:none;box-shadow:0 5px 0 #e8dfcc;transition:transform .2s}
+.official-card:nth-child(2){background:#edf4ff}.official-card:nth-child(3){background:#fff0e5}.official-card:nth-child(4){background:#f2edff}
+.official-card:hover{transform:translateY(-3px);border-color:var(--forest)}
+.official-icon{font-size:2.2rem}.official-card h3{font-size:1.35rem}.official-card small{font-weight:750;color:#21604e}
+
+
+.finder-intro{padding:22px;background:#e9efdf;border-radius:18px;margin:20px 0;color:#35564a}
+.finder-step{margin:26px 0 14px;font-size:1.15rem}.finder-choices{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.finder-choice{text-align:left;padding:20px;border:2px solid #dfd6bd;background:#fffaf0;border-radius:18px;box-shadow:0 4px 0 #e8dfcc;transition:transform .2s}
+.finder-choice:nth-child(2){background:#edf4ff}.finder-choice:nth-child(3){background:#fff0e5}.finder-choice:nth-child(4){background:#f2edff}
+.finder-choice:hover{transform:translateY(-2px)}.finder-choice[aria-pressed=true]{border-color:#216d58;box-shadow:0 4px 0 #216d58}.finder-choice b{display:block;font-size:1.05rem;margin-bottom:5px}.finder-choice span{font-size:.88rem;color:#53665e}
+.finder-topics{display:flex;gap:10px;flex-wrap:wrap}.finder-topics button[aria-pressed=true]{background:var(--forest);color:white}
+.finder-result{margin-top:24px;padding:clamp(20px,4vw,32px);border:2px solid #b7cdbb;border-radius:22px;background:#fffdf7;box-shadow:0 6px 0 #dde5d4}
+.finder-result h3{font-size:1.65rem;margin:12px 0}.finder-result p{margin:12px 0}.finder-reason{padding:16px;background:#edf4e9;border-radius:12px}.finder-actions{display:flex;flex-wrap:wrap;gap:10px;margin:20px 0}
+.finder-actions a{padding:12px 16px;border-radius:12px;background:var(--forest);color:white;text-decoration:none;font-weight:700}.finder-actions a.secondary{background:#e9e4f5;color:#443e64}.finder-note{color:var(--muted);font-size:.87rem}.finder-reset{margin-top:22px}
+@media(max-width:650px){.finder-choices{grid-template-columns:1fr}.finder-actions a{width:100%;text-align:center}}
+</style>
 </head>
 <body>
-<nav aria-label="주 메뉴"><a href="#home" class="brand"><span class="mark">✳</span>수학 탐험 아틀라스</a><div class="navlinks"><a href="#home">탐험 지도</a><a href="#lab">체험실</a><a href="#guide">기능 도감</a><a href="#log">탐험 기록</a><a href="#resources">수업 자료</a></div><button id="motion" aria-pressed="false">움직임 끄기</button></nav>
+<nav aria-label="주 메뉴"><a href="#home" class="brand"><span class="mark">✳</span>수학 탐험 아틀라스</a><div class="navlinks"><a href="#home">탐험 지도</a><a href="#lab">체험실</a><a href="#guide">기능 도감</a><a href="#resources">맞춤 기능 찾기</a></div><button id="motion" aria-pressed="false">움직임 끄기</button></nav>
 <main><a class="crumb" href="#home" hidden>← 탐험 지도로</a><section id="home"><div class="hero"><div><span class="kicker">FIELD GUIDE　/　VOL. 01</span><h1>똑똑! 수학탐험대<br><em>탐험 아틀라스</em></h1><p>똑똑! 수학탐험대가 처음이라면 기능 도감부터 펼쳐 보세요. 직접 수학을 해 보고 싶다면 지도에서 탐험할 번호를 고르세요.</p><a class="cta" href="#guide">기능 도감 펼치기　→</a></div>
-<figure><svg class="map" viewBox="0 0 480 305" role="group" aria-label="열 가지 체험 지점이 점선 탐방로로 이어진 수학섬 지도"><defs><pattern id="sea" width="22" height="22" patternUnits="userSpaceOnUse"><path d="M1 11q4 -3 8 0" fill="none" stroke="#76a69a" opacity=".45"/></pattern><g id="tree"><path d="m0 0 7 -15 7 15h-4l5 7H-1l5 -7z" fill="#43866e"/><path d="M7 6v6" stroke="#42644f" stroke-width="3"/></g></defs><rect width="480" height="305" rx="18" fill="#8bcfd2"/><rect width="480" height="305" rx="18" fill="url(#sea)"/><path d="M34 177Q2 138 65 103T159 59Q197 2 256 40T345 41Q408 32 409 80T455 141Q480 186 418 202T338 255Q277 290 231 255T137 260Q88 276 77 233T34 177Z" fill="#a7cba5" stroke="#7eb7a0" stroke-width="10"/><path d="M47 171Q22 145 80 113T172 69Q202 24 252 54T346 55Q393 48 396 90T440 147Q451 174 409 189T329 243Q280 271 235 239T137 244Q102 259 91 220T47 171Z" fill="#e6e8aa"/><path d="m292 103 35-64 36 64z" fill="#739979"/><path d="m312 66 15-27 15 27-10-5-8 5-5-5z" fill="#f8f3d5"/><path d="M194 63q-25 45 10 69t-2 60q-24 38 31 63" fill="none" stroke="#7fb6a8" stroke-width="11"/><g id="trees"></g><path d="M85 167Q86 79 143 95T237 106Q288 90 302 147T377 169Q352 244 263 216Q235 165 190 178Q257 126 335 93" fill="none" stroke="#665d42" stroke-width="3" class="trail" stroke-dasharray="5 6"/><g class="weather" aria-hidden="true" pointer-events="none">
+<figure><svg class="map" viewBox="0 0 480 305" role="group" aria-label="열 가지 체험 지점이 점선 탐방로로 이어진 수학섬 지도"><defs><pattern id="sea" width="22" height="22" patternUnits="userSpaceOnUse"><path d="M1 11q4 -3 8 0" fill="none" stroke="#76a69a" opacity=".45"/></pattern><g id="tree"><path d="m0 0 7 -15 7 15h-4l5 7H-1l5 -7z" fill="#43866e"/><path d="M7 6v6" stroke="#42644f" stroke-width="3"/></g></defs><rect width="480" height="305" rx="18" fill="#8bcfd2"/><rect width="480" height="305" rx="18" fill="url(#sea)"/><path d="M34 177Q2 138 65 103T159 59Q197 2 256 40T345 41Q408 32 409 80T455 141Q480 186 418 202T338 255Q277 290 231 255T137 260Q88 276 77 233T34 177Z" fill="#a7cba5" stroke="#7eb7a0" stroke-width="10"/><path d="M47 171Q22 145 80 113T172 69Q202 24 252 54T346 55Q393 48 396 90T440 147Q451 174 409 189T329 243Q280 271 235 239T137 244Q102 259 91 220T47 171Z" fill="#e6e8aa"/><path d="m292 103 35-64 36 64z" fill="#739979"/><path d="m312 66 15-27 15 27-10-5-8 5-5-5z" fill="#f8f3d5"/><path d="M194 63q-25 45 10 69t-2 60q-24 38 31 63" fill="none" stroke="#7fb6a8" stroke-width="11"/><g id="trees"></g><path d="M85 167Q86 79 143 95T237 106Q288 90 302 147T377 169Q352 244 263 216Q235 165 190 178Q257 126 335 93Q370 265 116 215Q52 53 223 58" fill="none" stroke="#665d42" stroke-width="3" class="trail" stroke-dasharray="5 6"/><g class="weather" aria-hidden="true" pointer-events="none">
 <g class="cloud"><path d="M19 51q-7-12 6-15 4-16 18-9 9-4 14 5 12-1 12 10 2 9-12 9z" fill="#fff9ed"/><path d="M35 40h2m9 0h2" stroke="#557180" stroke-width="3" stroke-linecap="round"/></g>
 <g class="cloud cloud2"><path d="M361 31q-6-9 4-13 5-11 14-7 8-4 13 4 11-1 11 9 0 7-9 7z" fill="#fff9ed"/></g>
-<g class="boat"><path d="M385 252h37l-7 9h-22z" fill="#e58d65" stroke="#685355" stroke-width="2"/><path d="M402 251v-29l-15 24h15" fill="#fff0b5" stroke="#685355" stroke-width="2"/><path d="m405 226 12 20h-12z" fill="#f5b2b1"/><path d="M384 267q6 3 12 0t12 0t12 0" fill="none" stroke="#e7fbf4" stroke-width="2"/></g></g><g id="pins"></g><text x="18" y="285" fill="#eff5da" font-size="11" font-family="monospace">FIG. 01 / MATH ISLAND</text><text x="444" y="28" fill="#fff" font-size="15">↑ N</text></svg><figcaption>PLATE 01　·　수학섬 탐방도</figcaption></figure></div>
-<div class="entry"><a href="#guide"><svg class="sticker" aria-hidden="true" viewBox="0 0 64 64"><g stroke="#394456" stroke-width="2.2" stroke-linejoin="round"><path d="M8 13q13-7 24 0 13-7 24 0v35q-12-5-24 0-13-5-24 0z" fill="#c4b4fa"/><path d="M32 14v12" fill="none"/><path d="m23 49-2 7-5 1m23-8 3 7h5" fill="none" stroke-linecap="round"/></g><g fill="#394456"><ellipse cx="25" cy="29" rx="2" ry="3"/><ellipse cx="39" cy="29" rx="2" ry="3"/></g><path d="M29 35q3 4 6 0" fill="none" stroke="#394456" stroke-width="2" stroke-linecap="round"/><g fill="#ee8e91"><ellipse cx="20" cy="34" rx="3" ry="1.6"/><ellipse cx="44" cy="34" rx="3" ry="1.6"/></g></svg><small>01 / GUIDE</small><b>어떤 서비스인가요? →</b><span>아홉 가지 기능과 교실 활용법</span></a><a href="#lab/1"><svg class="sticker" aria-hidden="true" viewBox="0 0 64 64"><g stroke="#394456" stroke-width="2.2" stroke-linejoin="round"><path d="m32 3 6 7 9-1 2 9 8 5-4 9 3 9-9 4-4 9-10-3-9 4-5-9-10-2 2-10-5-8 9-6 1-10 10 1z" fill="#ffd575"/><path d="m23 49-2 7-5 1m23-8 3 7h5" fill="none" stroke-linecap="round"/></g><g fill="#394456"><ellipse cx="25" cy="29" rx="2" ry="3"/><ellipse cx="39" cy="29" rx="2" ry="3"/></g><path d="M29 35q3 4 6 0" fill="none" stroke="#394456" stroke-width="2" stroke-linecap="round"/><g fill="#ee8e91"><ellipse cx="20" cy="34" rx="3" ry="1.6"/><ellipse cx="44" cy="34" rx="3" ry="1.6"/></g></svg><small>02 / PLAY</small><b>학생처럼 해 볼까요? →</b><span>조작하며 배우는 열 가지 수학 체험</span></a><a href="#log"><svg class="sticker" aria-hidden="true" viewBox="0 0 64 64"><g stroke="#394456" stroke-width="2.2" stroke-linejoin="round"><path d="m32 5 8 14 17 3-11 14 1 16-15-6-15 6 1-16L7 22l17-3z" fill="#ffad9b"/><path d="m23 49-2 7-5 1m23-8 3 7h5" fill="none" stroke-linecap="round"/></g><g fill="#394456"><ellipse cx="25" cy="29" rx="2" ry="3"/><ellipse cx="39" cy="29" rx="2" ry="3"/></g><path d="M29 35q3 4 6 0" fill="none" stroke="#394456" stroke-width="2" stroke-linecap="round"/><g fill="#ee8e91"><ellipse cx="20" cy="34" rx="3" ry="1.6"/><ellipse cx="44" cy="34" rx="3" ry="1.6"/></g></svg><small>03 / LOG</small><b>어디까지 왔을까요? →</b><span>모은 도장과 다음 추천 활동</span></a></div></section><section id="lab" hidden><div class="head"><div><span class="kicker">01 / INTERACTIVE LAB</span><h2>손으로 푸는 탐험실</h2><p>아래는 이 안내서에서 바로 해 보는 자체 제작 미션이에요. 각 체험에 공식 교구와의 관계를 표시했어요. 섬 이름과 도장 미션은 이 안내서의 자체 구성입니다.</p></div></div>
+<g class="boat"><path d="M385 252h37l-7 9h-22z" fill="#e58d65" stroke="#685355" stroke-width="2"/><path d="M402 251v-29l-15 24h15" fill="#fff0b5" stroke="#685355" stroke-width="2"/><path d="m405 226 12 20h-12z" fill="#f5b2b1"/><path d="M384 267q6 3 12 0t12 0t12 0" fill="none" stroke="#e7fbf4" stroke-width="2"/></g></g><g id="pins"></g><text x="18" y="285" fill="#eff5da" font-size="11" font-family="monospace">FIG. 01 / MATH ISLAND</text><text x="444" y="28" fill="#fff" font-size="15">↑ N</text></svg><figcaption>PLATE 01　·　수학섬 탐방도</figcaption><figcaption id="mapProgress" aria-live="polite"></figcaption><figcaption>연노랑 ○ 미완료 · 초록 ✓ 완료</figcaption></figure></div>
+<div class="entry"><a href="#guide"><svg class="sticker" aria-hidden="true" viewBox="0 0 64 64"><g stroke="#394456" stroke-width="2.2" stroke-linejoin="round"><path d="M8 13q13-7 24 0 13-7 24 0v35q-12-5-24 0-13-5-24 0z" fill="#c4b4fa"/><path d="M32 14v12" fill="none"/><path d="m23 49-2 7-5 1m23-8 3 7h5" fill="none" stroke-linecap="round"/></g><g fill="#394456"><ellipse cx="25" cy="29" rx="2" ry="3"/><ellipse cx="39" cy="29" rx="2" ry="3"/></g><path d="M29 35q3 4 6 0" fill="none" stroke="#394456" stroke-width="2" stroke-linecap="round"/><g fill="#ee8e91"><ellipse cx="20" cy="34" rx="3" ry="1.6"/><ellipse cx="44" cy="34" rx="3" ry="1.6"/></g></svg><small>01 / GUIDE</small><b>어떤 서비스인가요? →</b><span>공식 사이트로 연결되는 네 가지 바로가기</span></a><a href="#lab/1"><svg class="sticker" aria-hidden="true" viewBox="0 0 64 64"><g stroke="#394456" stroke-width="2.2" stroke-linejoin="round"><path d="m32 3 6 7 9-1 2 9 8 5-4 9 3 9-9 4-4 9-10-3-9 4-5-9-10-2 2-10-5-8 9-6 1-10 10 1z" fill="#ffd575"/><path d="m23 49-2 7-5 1m23-8 3 7h5" fill="none" stroke-linecap="round"/></g><g fill="#394456"><ellipse cx="25" cy="29" rx="2" ry="3"/><ellipse cx="39" cy="29" rx="2" ry="3"/></g><path d="M29 35q3 4 6 0" fill="none" stroke="#394456" stroke-width="2" stroke-linecap="round"/><g fill="#ee8e91"><ellipse cx="20" cy="34" rx="3" ry="1.6"/><ellipse cx="44" cy="34" rx="3" ry="1.6"/></g></svg><small>02 / PLAY</small><b>학생처럼 해 볼까요? →</b><span>조작하며 배우는 열 가지 수학 체험</span></a><a href="#resources"><svg class="sticker" aria-hidden="true" viewBox="0 0 64 64"><g stroke="#394456" stroke-width="2.2" stroke-linejoin="round"><path d="m32 5 8 14 17 3-11 14 1 16-15-6-15 6 1-16L7 22l17-3z" fill="#ffad9b"/><path d="m23 49-2 7-5 1m23-8 3 7h5" fill="none" stroke-linecap="round"/></g><g fill="#394456"><ellipse cx="25" cy="29" rx="2" ry="3"/><ellipse cx="39" cy="29" rx="2" ry="3"/></g><path d="M29 35q3 4 6 0" fill="none" stroke="#394456" stroke-width="2" stroke-linecap="round"/><g fill="#ee8e91"><ellipse cx="20" cy="34" rx="3" ry="1.6"/><ellipse cx="44" cy="34" rx="3" ry="1.6"/></g></svg><small>03 / FINDER</small><b>어떤 기능이 맞을까요? →</b><span>목적에 맞는 기능과 체험 찾아보기</span></a></div></section><section id="lab" hidden><div class="head"><div><span class="kicker">01 / INTERACTIVE LAB</span><h2>손으로 푸는 탐험실</h2><p>아래는 이 안내서에서 바로 해 보는 자체 제작 미션이에요. 각 체험에 공식 교구와의 관계를 표시했어요. 섬 이름과 체험 미션은 이 안내서의 자체 구성입니다.</p></div></div>
 <aside class="officialstrip"><b>공식 활동도 해 볼까요?</b>　공식 목록에서 ‘쌓기나무 시뮬레이터’, ‘입체도형 알아보기’, ‘도형의 다양한 변신’을 선택하세요. <a href="https://www.toctocmath.kr/experience/reality" target="_blank" rel="noopener">실감형 콘텐츠 열기 ↗</a></aside><div class="layout"><div class="stations" id="stations" aria-label="체험 선택"></div><article class="play"><span class="kicker" id="meta"></span><h3 id="title"></h3><p id="task"></p><div class="stage" id="stage"></div><div class="controls"><button class="primary" id="check">결과 확인</button><button id="reset">처음부터</button></div><p class="feedback" role="status" id="feedback"></p><details id="teacher"><summary>선생님의 다음 질문</summary><p id="prompt"></p></details><a id="labSource" class="source" target="_blank" rel="noopener">공식 활용 안내 ↗</a></article></div></section>
-<section id="guide" hidden><div class="head"><div><span class="kicker">02 / FIELD NOTES</span><h2>공식 기능 도감</h2><p>똑똑! 수학탐험대는 한국교육학술정보원이 운영하는 초등 1~6학년 대상 무료 서비스예요. 항목을 펼쳐 교실에서 쓰는 장면을 살펴보세요.</p></div></div><p class="officialstrip"><a href="https://www.toctocmath.kr/" target="_blank" rel="noopener">공식 똑똑! 수학탐험대 방문 ↗</a> · 항목을 펼치면 관련 공식 안내로 이동할 수 있어요.</p><div class="atlas" id="atlas"></div></section>
-<section id="log" hidden><div class="head"><div><span class="kicker">03 / EXPLORER LOG</span><h2>나의 탐험 기록</h2></div></div><div class="record"><strong id="progress"></strong><p id="advice"></p><ul id="results"></ul><button id="continue">추천 체험 열기 →</button></div></section>
-<section id="resources" hidden><div class="head"><div><span class="kicker">04 / RESOURCES</span><h2>실제 수업 준비하기</h2><p>공식 사이트에서 학년과 단원을 확인하고, 자료실의 수업 사례를 함께 살펴보세요.</p></div></div><div class="links"><a href="https://www.toctocmath.kr/">공식 서비스 ↗</a><a href="https://www.toctocmath.kr/board/data">수업 자료실 ↗</a><a href="https://www.toctocmath.kr/board/faq">가입·학급 등록 안내 ↗</a></div></section></main>
+<section id="guide" hidden>
+<div class="head"><div><span class="kicker">02 / OFFICIAL GUIDE</span><h2>공식 기능 도감</h2><p>원하는 메뉴를 고르면 공식 사이트가 새 창으로 열려요.</p></div></div>
+<div class="atlas" id="atlas"></div>
+</section>
+
+<section id="resources" hidden>
+ <div class="head"><div><span class="kicker">04 / FIND YOUR PATH</span><h2>나에게 맞는 기능 찾기</h2><p>지금 하고 싶은 일을 고르면, 어울리는 기능과 체험을 안내해 드려요.</p></div></div>
+ <p class="finder-intro">✦ 목적 선택 → 관심 주제 선택 → 추천 기능 만나기<br><small>선택한 목적에 따라 미리 정리한 기능을 안내하는 길잡이예요.</small></p>
+ <h3 class="finder-step" id="purposeHeading">1. 무엇을 해 보고 싶나요?</h3>
+ <div class="finder-choices" id="finderPurposes" role="group" aria-labelledby="purposeHeading"></div>
+ <div id="finderStep2" hidden><h3 class="finder-step" id="topicHeading">2. 어떤 내용을 살펴볼까요?</h3><div class="finder-topics" id="finderTopics" role="group" aria-labelledby="topicHeading"></div></div>
+ <div id="finderResult" class="finder-result" hidden aria-live="polite"></div>
+ <button class="finder-reset" id="finderReset" hidden>↺ 처음부터 다시 고르기</button>
+</section></main>
 <footer>수학 탐험 아틀라스 · 예비교사가 만든 비공식 활용 가이드<br>지도와 열 가지 체험은 자체 제작 예시입니다. 탐험 기록은 이 브라우저에 저장되며, 다음 체험은 완료 여부에 따라 제안합니다.</footer>
 <script>
 const $ = id => document.getElementById(id);
+
+// Purpose-based guide. Recommendations are fixed editorial mappings.
+const finderGroups = [
+ {title:'수와 계산을 눈으로 보여 주고 싶어요', hint:'분수 · 곱셈 · 수의 구성', topics:[
+  ['분수의 크기','분수 막대','분모가 다른 막대를 나란히 놓아 같은 양을 비교할 수 있어요.','분모 3과 6을 선택하고 2/3와 4/6의 길이를 비교해 보세요.',1,'/toctoc-tool'],
+  ['곱셈의 의미','배열로 알아보는 곱셈','같은 수씩 묶인 배열을 보며 줄 수와 한 줄의 수를 곱셈에 연결해요.','체험실에서 꽃 12송이를 3줄로 배열해 보세요. 공식 교구 목록에서도 관련 교구를 찾아볼 수 있어요.',2,'/toctoc-tool'],
+  ['수의 구성','10칸 상자','채운 칸과 빈칸을 비교하며 수를 나누고 모아 볼 수 있어요.','10칸에 빨간 칩 5개와 파란 칩 2개를 놓고, 남은 칸을 세어 보세요.',9,'/toctoc-tool']
+ ]},
+ {title:'도형을 직접 움직이며 탐구하고 싶어요', hint:'대칭 · 넓이 · 입체도형', topics:[
+  ['대칭 무늬','대칭 탐구','대칭축에서 같은 거리만큼 떨어진 칸을 찾으며 대응 관계를 살펴봐요.','체험실에서 오른쪽 반쪽 무늬를 완성해 보세요. 공식 실감형 목록에서 도형 관련 활동도 찾아보세요.',3,'/experience/reality'],
+  ['삼각형의 넓이','지오보드','꼭짓점의 위치를 바꾸며 삼각형의 모양과 넓이를 비교할 수 있어요.','체험실에서 못 세 개로 넓이가 2인 삼각형을 만들어 보세요.',10,'/toctoc-tool'],
+  ['입체도형','쌓기나무 시뮬레이터','위치와 높이를 바꾸고 보는 방향을 돌려 입체 모양을 살펴봐요.','체험실에서 목표 높이대로 블록을 쌓아 보세요. 공식 실감형 목록에서는 쌓기나무 시뮬레이터를 찾아보세요.',7,'/experience/reality']
+ ]},
+ {title:'생활 속 수학을 체험하고 싶어요', hint:'시각 · 자료 · 평균 · 규칙', topics:[
+  ['시각 읽기','시계','전자시계의 숫자와 아날로그 시계의 바늘을 함께 보며 시각을 이해해요.','3시 25분을 나타내고, 전자시계를 가린 뒤 바늘만 보고 읽어 보세요.',8,'/toctoc-tool'],
+  ['자료 비교','자료 해석 체험','막대의 길이와 수를 비교하고 주어진 조건에 따라 자료를 해석해요.','자체 제작 체험에서 항구별 배의 수를 비교해 보세요. 공식 자료실에서 수업 자료도 찾아볼 수 있어요.',5,'/board/data'],
+  ['고르게 나누기','평균 체험','전체 양을 유지하며 세 탑을 고르게 만드는 과정을 관찰해요.','자체 제작 체험에서 블록을 옮겨 세 탑을 같은 높이로 만들어 보세요.',6,'/toctoc-tool'],
+  ['반복 찾기','규칙 체험','반복되는 가장 작은 묶음을 찾아 다음에 올 모양을 예상해요.','자체 제작 체험에서 모양 두 개를 이어 놓고 반복 단위를 설명해 보세요.',4,'/board/data']
+ ]},
+ {title:'서비스를 알아보고 수업을 준비하고 싶어요', hint:'서비스 소개 · 공식 자료', topics:[
+  ['서비스 처음 알아보기','똑똑! 수학탐험대 소개','공식 홈페이지에서 서비스의 전체 구성을 먼저 살펴볼 수 있어요.','홈페이지의 ‘서비스 소개 보기’를 누르고 안내를 차례로 살펴보세요.',null,'/main'],
+  ['수업 자료 찾기','공식 자료실','활용 가이드와 학습 자료를 찾아 수업 준비에 참고할 수 있어요.','자료실에서 필요한 자료의 제목과 대상 학년을 확인해 보세요.',null,'/board/data']
+ ]}
+];
+let finderGroup = -1;
+function selectPurpose(index) {
+ finderGroup = index;
+ [...$('finderPurposes').children].forEach((button,i)=>button.setAttribute('aria-pressed',String(i===index)));
+ $('finderStep2').hidden = false;
+ $('finderResult').hidden = true;
+ $('finderReset').hidden = false;
+ $('finderTopics').innerHTML = '';
+ finderGroups[index].topics.forEach((topic,i)=>{
+  const button = document.createElement('button');
+  button.textContent = topic[0];
+  button.setAttribute('aria-pressed','false');
+  button.onclick = ()=>selectTopic(i);
+  $('finderTopics').append(button);
+ });
+ $('finderTopics').children[0].focus();
+}
+function selectTopic(index) {
+ const [topic,title,reason,tip,lab,path] = finderGroups[finderGroup].topics[index];
+ [...$('finderTopics').children].forEach((button,i)=>button.setAttribute('aria-pressed',String(i===index)));
+ const label = {'/toctoc-tool':'공식 교구 목록 열기','/experience/reality':'공식 실감형 목록 열기','/board/data':'공식 자료실 열기','/main':'공식 홈페이지 열기'}[path];
+ $('finderResult').innerHTML = '<span class="kicker">'+topic+' · 추천 안내</span><h3 tabindex="-1">'+title+'</h3><p class="finder-reason"><b>이런 점에서 어울려요</b><br>'+reason+'</p><p><b>이렇게 시작해 보세요</b><br>'+tip+'</p><div class="finder-actions">'+(lab?'<a href="#lab/'+lab+'">안내서에서 체험하기 →</a>':'<a href="#guide">공식 기능 도감 보기 →</a>')+'<a class="secondary" href="https://www.toctocmath.kr'+path+'" target="_blank" rel="noopener">'+label+' ↗</a></div><p class="finder-note">'+(lab?'안내서 체험은 자체 제작 예시예요. 공식 링크는 해당 메뉴의 목록이나 실행 화면으로 연결돼요.':'공식 사이트가 새 창으로 열려요.')+'</p>';
+ $('finderResult').hidden = false;
+ $('finderResult').querySelector('h3').focus({preventScroll:true});
+}
+finderGroups.forEach((group,index)=>{
+ const button = document.createElement('button');
+ button.className = 'finder-choice';
+ button.setAttribute('aria-pressed','false');
+ button.innerHTML = '<b>'+group.title+'</b><span>'+group.hint+'</span>';
+ button.onclick = ()=>selectPurpose(index);
+ $('finderPurposes').append(button);
+});
+$('finderReset').onclick = ()=>{
+ finderGroup = -1;
+ [...$('finderPurposes').children].forEach(button=>button.setAttribute('aria-pressed','false'));
+ $('finderStep2').hidden = true;
+ $('finderResult').hidden = true;
+ $('finderReset').hidden = true;
+ $('finderTopics').innerHTML = '';
+ $('finderResult').innerHTML = '';
+ $('finderPurposes').children[0].focus();
+};
+
 const locations = [[85,167],[143,95],[237,106],[302,147],[377,169],[263,216],[190,178],[335,93],[116,215],[223,58]];
-$('pins').innerHTML = locations.map(([x,y],i) => '<a href="#lab/'+(i+1)+'" aria-label="'+['분수 해안','배열 정원','대칭 계곡','규칙 숲','자료 항구','평균 봉우리','입체 전망대','시계 광장','열 칸 온실','지오보드 공방'][i]+' 체험 열기"><g transform="translate('+x+' '+y+')"><circle r="14" fill="#fff9d6" stroke="#294e43" stroke-width="2"/><text y="5" text-anchor="middle" font-size="13" font-weight="bold" fill="#174c40">'+(i+1)+'</text></g></a>').join('');
+$('pins').innerHTML = locations.map(([x,y],i) => '<a href="#lab/'+(i+1)+'" aria-label="'+['분수 해안','배열 정원','대칭 계곡','규칙 숲','자료 항구','평균 봉우리','입체 전망대','시계 광장','열 칸 온실','지오보드 공방'][i]+' 체험 열기"><g transform="translate('+x+' '+y+')"><circle r="14" fill="#fff9d6" stroke="#294e43" stroke-width="2"/><text y="5" text-anchor="middle" font-size="13" font-weight="bold" fill="#174c40">'+(i+1)+'</text><text class="pin-check" x="11" y="-10" text-anchor="middle" font-size="12" fill="#fff" stroke="#164d40" stroke-width="3" paint-order="stroke" style="display:none" aria-hidden="true">✓</text></g></a>').join('');
 $('trees').innerHTML = [[110,140],[120,147],[135,135],[151,204],[159,210],[289,194],[391,136],[380,135],[235,77],[67,150]].map(([x,y]) => '<use href="#tree" x="'+x+'" y="'+y+'"/>').join('');
-const notes = [
- ['교과활동','학년·학기·단원·차시를 골라 수업 내용에 맞는 활동을 찾아요.','차시를 고른 뒤 오늘 배울 개념을 설명하는 자료를 먼저 보고, 학생이 짝에게 풀이를 들려주는 시간을 마련해요.'],
- ['탐험활동','미션 속 수학 문제를 풀며 학습을 이어 가요.','미션이 끝나면 어떤 수학 생각이 해결의 실마리였는지 한 문장으로 남겨요.'],
- ['자유활동','학생이 관심 있는 활동을 선택해 수학을 탐색해요.','선택한 까닭과 새로 발견한 점을 친구에게 소개해요.'],
- ['디지털 교구','화면에서 수학 대상을 움직이거나 비교하며 개념을 살펴봐요.','분수 막대라면 먼저 결과를 예상하고 조작한 뒤, 예상과 같았는지 말해요.'],
- ['진단·평가활동','진단과 평가 결과로 학생의 현재 이해를 살펴봐요.','틀린 문항 하나를 골라 학생이 어떻게 생각했는지 들은 뒤 후속 활동을 정해요.'],
- ['인공지능 추천활동','진단 결과를 바탕으로 학생에게 맞는 활동을 제안해요.','추천 활동을 마친 뒤 처음 어려웠던 문제로 돌아가 풀이가 어떻게 달라졌는지 비교해요.'],
- ['학습 대시보드','학습 활동 현황과 평가 결과를 확인해요.','같은 문제를 어려워한 학생들과 교구를 다시 조작하며 공통으로 막힌 부분을 찾아요.'],
- ['학급 연결과 참여코드','가입한 학생을 학급에 등록하면 수업 참여코드로 로그인할 수 있어요.','수업 전에는 학급 등록을 확인하고, 수업 중에는 학생이 자기 이름으로 들어왔는지 확인해요.']
+const officialLinks = [
+ ['교구활동','분수 막대, 시계 등 공식 디지털 교구를 직접 조작해요.','/toctoc-tool','◫'],
+ ['실감형콘텐츠','쌓기나무와 입체도형 등 가상 공간의 수학을 만나 보세요.','/experience/reality','◇'],
+ ['자료실','수업 활용 가이드와 학습 자료를 찾아보세요.','/board/data','▤'],
+ ['똑똑! 수학탐험대 소개','공식 홈페이지의 ‘서비스 소개 보기’를 눌러 살펴보세요.','/main','✦']
 ];
-notes.push(['실감형 콘텐츠','가상 공간에서 입체도형과 수학 개념을 탐색해요.','공식 목록에서 쌓기나무 시뮬레이터 또는 입체도형 알아보기를 골라 활동해 보세요.']);
-const officialBase='https://www.toctocmath.kr';
-const guides=[
- ['수업 활용 자료실','/board/data'],['탐험활동 서비스 소개','/'],['공식 서비스 홈','/'],
- ['공식 교구 활용 자료','/board/data'],['진단·평가 FAQ','/board/faq'],['AI 추천활동 FAQ','/board/faq'],
- ['학습 현황 FAQ','/board/faq'],['학급 등록 FAQ','/board/faq'],['공식 실감형 활동 목록','/experience/reality']
-];
-for(const [i,[name,summary,example]] of notes.entries()){
- const note=document.createElement('details');
- note.innerHTML='<summary>'+name+'</summary><p>'+summary+'</p><p><b>교실에서는</b>　'+example+'</p>';
- const [label,path]=guides[i];
- note.innerHTML+='<a class="source" href="'+officialBase+path+'" target="_blank" rel="noopener">'+label+' ↗</a>';
- $('atlas').append(note);
+for (const [name, description, path, icon] of officialLinks) {
+ const card = document.createElement('a');
+ card.className = 'official-card';
+ card.href = 'https://www.toctocmath.kr' + path;
+ card.target = '_blank';
+ card.rel = 'noopener';
+ card.innerHTML = '<span class="official-icon" aria-hidden="true">'+icon+'</span><h3>'+name+' ↗</h3><p>'+description+'</p><small>공식 사이트에서 열기</small>';
+ $('atlas').append(card);
 }
 const labs = [
  ['분수 해안','분수','분모 3과 6을 고르고 + 버튼으로 두 막대 모두 전체의 ⅔ 길이가 되게 만들어 보세요.','두 막대의 길이가 같은데 조각 수가 다른 까닭은 무엇일까요?'],
@@ -132,7 +222,7 @@ function geoboard(){
  const points=picked.map(i=>(25+i%3*55)+','+(25+Math.floor(i/3)*55)).join(' ');
  return '<div class="geo"><svg aria-hidden="true" viewBox="0 0 160 160"><path d="M25 25H135V135H25ZM80 25V135M25 80H135" stroke="#7e998e" fill="none"/><polygon points="'+points+'" fill="#ffb98699" stroke="#ab6846" stroke-width="3"/></svg>'+Array.from({length:9},(_,i)=>'<button data-cell="'+i+'" aria-pressed="'+picked.includes(i)+'" aria-label="'+(1+Math.floor(i/3))+'행 '+(i%3+1)+'열 못" style="left:'+((25+i%3*55)/1.6)+'%;top:'+((25+Math.floor(i/3)*55)/1.6)+'%">●</button>').join('')+'</div><b>선택한 못 '+picked.length+' / 3</b>';
 }
-let active=0, picked=[], rows=2, columns=3, towers=[], stamp='', next=0;
+let active=0, picked=[], rows=2, columns=3, towers=[], stamp='';
 const key='math-atlas-v1';
 let record={};
 try {const saved=JSON.parse(localStorage.getItem(key)); if(saved && typeof saved==='object') record=saved;}catch{}
@@ -212,14 +302,15 @@ $('stage').onchange=e=>{
  if(id==='rows'||id==='columns'){if(id==='rows')rows=Number(value);else columns=Number(value);draw();$(id).focus();}
  if(id==='cargo')stamp=value;if(id==='from')from=value;if(id==='to')to=value;
 };
-function updateLog(){
- const done=labs.filter((_,i)=>record[i]==='done').length;
- next=labs.findIndex((_,i)=>record[i]==='retry');
- if(next<0)next=labs.findIndex((_,i)=>record[i]!=='done');
- $('progress').textContent='탐험 도장　'+done+' / '+labs.length;
- $('advice').textContent=next<0?'모든 지점을 탐험했어요. 한 가지 교구를 골라 친구에게 풀이를 설명해 보세요.':(record[next]==='retry'?'다시 풀어 볼 지점은 ':'다음에 방문할 지점은 ')+labs[next][0]+'입니다.';
- $('results').innerHTML=labs.map(([name],i)=>'<li>'+name+'　·　'+({done:'완료',retry:'다시 도전'}[record[i]]||'미탐험')+'</li>').join('');
- $('continue').textContent=next<0?'첫 체험 다시 열기 →':'추천 체험 열기 →';
+function updateMap() {
+ const done = labs.filter((_, i) => record[i] === 'done').length;
+ $('mapProgress').textContent = '완료한 탐험 '+done+' / '+labs.length;
+ for (const [i, pin] of [...$('pins').querySelectorAll('a')].entries()) {
+  const complete = record[i] === 'done';
+  pin.classList.toggle('completed', complete);
+  pin.setAttribute('aria-label', (i+1)+'번 '+labs[i][0]+(complete?' · 완료':' · 미완료')+' · 체험 열기');
+  pin.querySelector('.pin-check').style.display = complete ? '' : 'none';
+ }
 }
 $('check').onclick=()=>{
  const correct=[denoms.includes(3)&&denoms.includes(6)&&amounts[3]===2&&amounts[6]===4,rows===3&&columns===4,[0,2,4,6].every(v=>picked.includes(v))&&picked.length===4,picked.join('')==='▲▲',stamp==='8',towers.every(n=>n===4),heights.every((v,i)=>v===goal[i]),minutes===205,frameSize===10&&tokens.filter(v=>v==='빨강').length===5&&tokens.filter(v=>v==='파랑').length===2,geoArea()===2][active];
@@ -229,13 +320,12 @@ $('check').onclick=()=>{
  $('feedback').textContent=correct?'도장 획득! '+success:hint;
  if(correct||record[active]!=='done')record[active]=correct?'done':'retry';
  try{localStorage.setItem(key,JSON.stringify(record));}catch{}
- updateLog();
+ updateMap();
 };
 $('reset').onclick=()=>openLab(active);
-$('continue').onclick=()=>{location.hash='lab/'+(Math.max(0,next)+1);};
 function showPage() {
  const [requested, station] = location.hash.slice(1).split('/');
- const pages = ['home','guide','lab','log','resources'];
+ const pages = ['home','guide','lab','resources'];
  const page = pages.includes(requested) ? requested : 'home';
  for (const name of pages) $(name).hidden = name !== page;
  document.querySelector('.crumb').hidden = page === 'home';
@@ -244,7 +334,7 @@ function showPage() {
    else link.removeAttribute('aria-current');
  }
  if(page === 'lab') openLab(/^(?:[1-9]|10)$/.test(station) ? Number(station)-1 : 0);
- updateLog();
+ updateMap();
  const heading=$(page).querySelector('h1,h2');
  document.title=(page==='lab'?labs[active][0]:heading.textContent)+' · 수학 탐험 아틀라스';
  heading.tabIndex=-1;
